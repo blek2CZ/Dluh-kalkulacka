@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Pozadí s kulatými rohy -->
+  <rect width="512" height="512" rx="90" fill="#1565C0"/>
+
+  <!-- Stín karty kalkulačky -->
+  <rect x="90" y="86" width="332" height="340" rx="28" fill="#0D47A1"/>
+
+  <!-- Karta kalkulačky -->
+  <rect x="84" y="80" width="332" height="340" rx="28" fill="#1976D2"/>
+
+  <!-- Displej -->
+  <rect x="112" y="108" width="276" height="90" rx="14" fill="#E3F2FD" fill-opacity="0.2"/>
+  <!-- Kč text na displeji -->
+  <text x="250" y="175" text-anchor="middle"
+        font-family="'Segoe UI', Arial, Helvetica, sans-serif"
+        font-size="62" font-weight="800" fill="#FFFFFF" letter-spacing="-2">Kč</text>
+
+  <!-- Tlačítka – řada 1 -->
+  <rect x="112" y="220" width="58" height="46" rx="9" fill="#FFFFFF" fill-opacity="0.25"/>
+  <rect x="182" y="220" width="58" height="46" rx="9" fill="#FFFFFF" fill-opacity="0.25"/>
+  <rect x="252" y="220" width="58" height="46" rx="9" fill="#FFFFFF" fill-opacity="0.25"/>
+  <rect x="322" y="220" width="74" height="46" rx="9" fill="#FF6F00"/>
+
+  <!-- Tlačítka – řada 2 -->
+  <rect x="112" y="278" width="58" height="46" rx="9" fill="#FFFFFF" fill-opacity="0.25"/>
+  <rect x="182" y="278" width="58" height="46" rx="9" fill="#FFFFFF" fill-opacity="0.25"/>
+  <rect x="252" y="278" width="58" height="46" rx="9" fill="#FFFFFF" fill-opacity="0.25"/>
+  <rect x="322" y="278" width="74" height="46" rx="9" fill="#FF6F00"/>
+
+  <!-- Tlačítka – řada 3 (Enter / =) -->
+  <rect x="112" y="336" width="168" height="46" rx="9" fill="#FF6F00"/>
+  <rect x="292" y="336" width="104" height="46" rx="9" fill="#FFFFFF" fill-opacity="0.25"/>
+</svg>

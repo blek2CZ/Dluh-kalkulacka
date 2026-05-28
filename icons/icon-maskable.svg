@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!--
+    Maskable ikona: obsah musí být ve "safe zone" (středových 80 %).
+    Safe zone = čtverec 204×204 px, střed 256,256.
+    Veškerý důležitý obsah je proto v oblasti cca 154–358 px.
+  -->
+
+  <!-- Plné pozadí (maskable vyžaduje bez kulatých rohů) -->
+  <rect width="512" height="512" fill="#1565C0"/>
+
+  <!-- Karta kalkulačky – uvnitř safe zone -->
+  <rect x="130" y="110" width="252" height="292" rx="22" fill="#0D47A1"/>
+  <rect x="124" y="104" width="252" height="292" rx="22" fill="#1976D2"/>
+
+  <!-- Displej -->
+  <rect x="148" y="126" width="204" height="72" rx="11" fill="#FFFFFF" fill-opacity="0.18"/>
+  <text x="250" y="178" text-anchor="middle"
+        font-family="'Segoe UI', Arial, Helvetica, sans-serif"
+        font-size="50" font-weight="800" fill="#FFFFFF" letter-spacing="-1">Kč</text>
+
+  <!-- Tlačítka – řada 1 -->
+  <rect x="148" y="212" width="44" height="36" rx="7" fill="#FFFFFF" fill-opacity="0.25"/>
+  <rect x="202" y="212" width="44" height="36" rx="7" fill="#FFFFFF" fill-opacity="0.25"/>
+  <rect x="256" y="212" width="44" height="36" rx="7" fill="#FFFFFF" fill-opacity="0.25"/>
+  <rect x="310" y="212" width="66" height="36" rx="7" fill="#FF6F00"/>
+
+  <!-- Tlačítka – řada 2 -->
+  <rect x="148" y="258" width="44" height="36" rx="7" fill="#FFFFFF" fill-opacity="0.25"/>
+  <rect x="202" y="258" width="44" height="36" rx="7" fill="#FFFFFF" fill-opacity="0.25"/>
+  <rect x="256" y="258" width="44" height="36" rx="7" fill="#FFFFFF" fill-opacity="0.25"/>
+  <rect x="310" y="258" width="66" height="36" rx="7" fill="#FF6F00"/>
+
+  <!-- Tlačítka – řada 3 -->
+  <rect x="148" y="304" width="120" height="36" rx="7" fill="#FF6F00"/>
+  <rect x="278" y="304" width="98" height="36" rx="7" fill="#FFFFFF" fill-opacity="0.25"/>
+</svg>

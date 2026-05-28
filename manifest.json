@@ -1,0 +1,27 @@
+{
+  "name": "Kalkulátor splátek",
+  "short_name": "Splátky",
+  "description": "Výpočet anuitních splátek dluhu se splátkovým kalendářem. Funguje offline.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0D47A1",
+  "theme_color": "#1565C0",
+  "orientation": "portrait-primary",
+  "lang": "cs",
+  "categories": ["finance", "utilities"],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Kalkulátor splátek</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1565C0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Splátky">
+  <link rel="apple-touch-icon" href="icons/icon.svg">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div class="header-icon">Kč</div>
+      <h1>Kalkulátor splátek</h1>
+      <p class="subtitle">Výpočet anuitních splátek dluhu</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="card input-card">
+      <h2>Vstupní hodnoty</h2>
+
+      <div class="form-group">
+        <label for="principal">Jistina (dlužná částka)</label>
+        <div class="input-wrapper">
+          <input type="number" id="principal" placeholder="např. 1 750 000" min="0" step="1000" inputmode="decimal">
+          <span class="unit">Kč</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="rate">Roční úroková sazba</label>
+        <div class="input-wrapper">
+          <input type="number" id="rate" placeholder="např. 6" min="0" max="100" step="0.01" inputmode="decimal">
+          <span class="unit">%</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="months">Počet splátek</label>
+        <div class="input-wrapper">
+          <input type="number" id="months" placeholder="např. 36" min="1" step="1" inputmode="numeric">
+          <span class="unit">měs.</span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button id="calcBtn" class="btn-primary" onclick="calculate()">Vypočítat</button>
+        <button class="btn-secondary" onclick="resetForm()">Vymazat</button>
+      </div>
+    </section>
+
+    <section id="results" class="hidden">
+
+      <div class="card result-summary">
+        <h2>Výsledky výpočtu</h2>
+        <div class="summary-grid">
+          <div class="summary-item span2 primary">
+            <span class="label">Měsíční splátka</span>
+            <span class="value large" id="monthlyPayment">—</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">Jistina</span>
+            <span class="value" id="displayPrincipal">—</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">Roční úrok</span>
+            <span class="value" id="displayRate">—</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">Měsíční úrok</span>
+            <span class="value" id="displayMonthlyRate">—</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">Počet splátek</span>
+            <span class="value" id="displayMonths">—</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">Celkem zaplaceno</span>
+            <span class="value" id="totalPayment">—</span>
+          </div>
+          <div class="summary-item warning">
+            <span class="label">Celkové úroky</span>
+            <span class="value" id="totalInterest">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card schedule-card">
+        <div class="schedule-header" onclick="toggleSchedule()" role="button" aria-expanded="false" id="scheduleToggle">
+          <h2>Splátkový kalendář</h2>
+          <span class="toggle-icon" id="toggleIcon">▼</span>
+        </div>
+        <div id="scheduleContent" class="hidden">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th class="col-num">#</th>
+                  <th>Splátka</th>
+                  <th>Úrok</th>
+                  <th>Úmor</th>
+                  <th>Zůstatek</th>
+                </tr>
+              </thead>
+              <tbody id="scheduleBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
