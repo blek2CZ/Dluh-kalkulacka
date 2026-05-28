@@ -61,7 +61,7 @@ git init
 git add .
 git commit -m "První verze kalkulátoru splátek"
 git branch -M main
-git remote add origin https://github.com/VÁŠ-ÚČET/splatky.git
+git remote add origin https://github.com/blek2CZ/Dluh-kalkulacka.git
 git push -u origin main
 ```
 
@@ -71,7 +71,7 @@ git push -u origin main
 2. Pod **Source** vyberte větev `main`, složku `/ (root)`
 3. Klikněte **Save**
 4. Po chvíli bude aplikace dostupná na:
-   `https://VÁŠ-ÚČET.github.io/splatky/`
+   https://blek2CZ.github.io/Dluh-kalkulacka/
 
 ## Instalace na Android
 
