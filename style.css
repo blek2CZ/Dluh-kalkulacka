@@ -363,6 +363,29 @@ tbody tr:hover {
   background: rgba(21,101,192,0.05);
 }
 
+/* ── Recalc panel ────────────────────────────────── */
+.recalc-card .schedule-header h2 {
+  color: var(--warning-text);
+}
+
+.recalc-hint {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 18px;
+  line-height: 1.5;
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.recalc-month-hint {
+  font-weight: 400;
+  color: var(--primary);
+  font-size: 0.78rem;
+  margin-left: 4px;
+}
+
 /* ── Utility ─────────────────────────────────────── */
 .hidden {
   display: none !important;

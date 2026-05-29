@@ -116,6 +116,45 @@
         </div>
       </div>
 
+      <div class="card recalc-card">
+        <div class="schedule-header" onclick="toggleRecalc()" role="button" aria-expanded="false" id="recalcToggle">
+          <h2>Přepočet dluhu</h2>
+          <span class="toggle-icon" id="recalcIcon">▼</span>
+        </div>
+        <div id="recalcContent" class="hidden">
+          <p class="recalc-hint">Použijte kdykoliv po dohodě obou stran — nezáleží na počtu uplynulých měsíců. Vyberte číslo poslední uhrazené splátky (zůstatek se doplní automaticky), zadejte dohodnuté navýšení a zbylé měsíce.</p>
+          <div class="form-group">
+            <label for="recalcAfterMonth">Po splátce č. <span class="recalc-month-hint" id="recalcMonthHint"></span></label>
+            <div class="input-wrapper">
+              <input type="number" id="recalcAfterMonth" placeholder="např. 10" min="1" step="1" inputmode="numeric" oninput="recalcFillBalance()">
+              <span class="unit">měs.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="recalcBalance">Zůstatek dluhu</label>
+            <div class="input-wrapper">
+              <input type="number" id="recalcBalance" placeholder="např. 1 200 000" min="0" step="1000" inputmode="decimal">
+              <span class="unit">Kč</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="recalcInflation">Dohodnuté navýšení dluhu</label>
+            <div class="input-wrapper">
+              <input type="number" id="recalcInflation" placeholder="např. 4,5" min="0" max="100" step="0.1" inputmode="decimal">
+              <span class="unit">%</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="recalcMonths">Zbývající měsíce</label>
+            <div class="input-wrapper">
+              <input type="number" id="recalcMonths" placeholder="např. 24" min="1" step="1" inputmode="numeric">
+              <span class="unit">měs.</span>
+            </div>
+          </div>
+          <button class="btn-primary" onclick="applyRecalc()">Přepočítat</button>
+        </div>
+      </div>
+
     </section>
   </main>
 

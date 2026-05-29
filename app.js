@@ -1,4 +1,4 @@
-/* =====================================================
+﻿/* =====================================================
    Kalkulátor splátek – app.js
    Vzorec anuitní splátky:
      M = P × [i × (1+i)^n] / [(1+i)^n − 1]
@@ -68,7 +68,6 @@ function calculate() {
   // Výpočet anuitní splátky
   let M;
   if (i === 0) {
-    // Bezúročná půjčka – rovnoměrné splátky
     M = P / n;
   } else {
     const factor = Math.pow(1 + i, n);
@@ -90,6 +89,13 @@ function calculate() {
   // ── Splátkový kalendář ──────────────────────────
   buildSchedule(P, M, i, n);
 
+  // ── Předvyplnit zbývající měsíce v panelu přepočtu
+  // (jen pokud uživatel ještě nezadal číslo splátky)
+  const afterMonthInput = document.getElementById('recalcAfterMonth');
+  if (!afterMonthInput.value.trim()) {
+    document.getElementById('recalcMonths').value = n;
+  }
+
   // ── Zobrazení sekce výsledků ────────────────────
   const resultsSection = document.getElementById('results');
   resultsSection.classList.remove('hidden');
@@ -100,19 +106,32 @@ function calculate() {
 }
 
 // ── Sestavení splátkového kalendáře ─────────────────
+// Pořadí: nejprve se postupně splatí veškeré úroky,
+// teprve poté se začíná umořovat jistina.
 function buildSchedule(P, M, i, n) {
   const tbody = document.getElementById('scheduleBody');
   tbody.innerHTML = '';
 
+  // Celkový fond úroků = co zaplatí dlužník navíc oproti jistině
+  let interestPool = M * n - P;
   let balance = P;
 
   for (let month = 1; month <= n; month++) {
-    const interestPayment = balance * i;
-    let principalPayment = M - interestPayment;
+    let interestPayment, principalPayment;
+
+    if (interestPool > 0.005) {
+      // Stále splácíme úroky
+      interestPayment = Math.min(M, interestPool);
+      principalPayment = M - interestPayment;
+      interestPool -= interestPayment;
+    } else {
+      // Všechny úroky zaplaceny – celá splátka jde na jistinu
+      interestPayment = 0;
+      principalPayment = M;
+    }
 
     balance -= principalPayment;
 
-    // Oprava plovoucí desetinné čárky v poslední splátce
     if (month === n || balance < 0.005) {
       balance = 0;
     }
@@ -141,6 +160,89 @@ function toggleSchedule() {
   toggle.setAttribute('aria-expanded', String(isHidden));
 }
 
+// ── Rozbalení / sbalení panelu přepočtu ─────────────
+function toggleRecalc() {
+  const content = document.getElementById('recalcContent');
+  const icon = document.getElementById('recalcIcon');
+  const toggle = document.getElementById('recalcToggle');
+
+  const isHidden = content.classList.contains('hidden');
+  content.classList.toggle('hidden');
+  icon.classList.toggle('open', isHidden);
+  toggle.setAttribute('aria-expanded', String(isHidden));
+}
+
+// ── Vyplnění zůstatku podle čísla splátky ───────────
+function recalcFillBalance() {
+  const afterMonth = parseInt(document.getElementById('recalcAfterMonth').value, 10);
+  const hint = document.getElementById('recalcMonthHint');
+  const balanceInput = document.getElementById('recalcBalance');
+  const monthsInput = document.getElementById('recalcMonths');
+
+  if (isNaN(afterMonth) || afterMonth < 1) {
+    hint.textContent = '';
+    return;
+  }
+
+  // Najít zůstatek z tabulky
+  const rows = document.querySelectorAll('#scheduleBody tr');
+  if (afterMonth <= rows.length) {
+    const cell = rows[afterMonth - 1].querySelector('td:last-child');
+    if (cell) {
+      const raw = cell.textContent.replace(/\u00a0/g, '').replace(/[^0-9,.-]/g, '').replace(',', '.');
+      const val = parseFloat(raw);
+      if (!isNaN(val)) {
+        balanceInput.value = val.toFixed(2);
+        clearError(balanceInput);
+        hint.textContent = '→ zůstatek ' + cell.textContent.trim();
+      }
+    }
+    // Předvyplnit zbývající měsíce
+    const totalRows = rows.length;
+    monthsInput.value = totalRows - afterMonth;
+  } else {
+    hint.textContent = '(splátka neexistuje)';
+  }
+}
+
+// ── Přepočet po inflaci ──────────────────────────────
+function applyRecalc() {
+  const balanceInput = document.getElementById('recalcBalance');
+  const inflationInput = document.getElementById('recalcInflation');
+  const monthsInput = document.getElementById('recalcMonths');
+
+  const balance = parseFloat(balanceInput.value);
+  const inflation = parseFloat(inflationInput.value);
+  const months = parseInt(monthsInput.value, 10);
+
+  if (!balanceInput.value.trim() || isNaN(balance) || balance <= 0) {
+    showError(balanceInput, 'Zadejte platný zůstatek dluhu.');
+    return;
+  }
+  clearError(balanceInput);
+
+  if (!inflationInput.value.trim() || isNaN(inflation) || inflation < 0 || inflation > 100) {
+    showError(inflationInput, 'Zadejte platnou inflaci (0–100 %).');
+    return;
+  }
+  clearError(inflationInput);
+
+  if (!monthsInput.value.trim() || isNaN(months) || months <= 0 || !Number.isInteger(months)) {
+    showError(monthsInput, 'Zadejte platný počet zbývajících měsíců.');
+    return;
+  }
+  clearError(monthsInput);
+
+  // Navýšení zůstatku o inflaci a předvyplnění formuláře
+  const newPrincipal = balance * (1 + inflation / 100);
+  document.getElementById('principal').value = newPrincipal.toFixed(2);
+  document.getElementById('months').value = months;
+
+  // Scrollovat nahoru a spustit výpočet
+  document.querySelector('.input-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTimeout(() => calculate(), 400);
+}
+
 // ── Reset formuláře ──────────────────────────────────
 function resetForm() {
   document.getElementById('principal').value = '';
@@ -149,20 +251,21 @@ function resetForm() {
 
   document.getElementById('results').classList.add('hidden');
 
-  // Sbalit kalendář pro příště
+  ['recalcAfterMonth', 'recalcBalance', 'recalcInflation', 'recalcMonths'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+
   document.getElementById('scheduleContent').classList.add('hidden');
   document.getElementById('toggleIcon').classList.remove('open');
 
-  // Odstranit chybové hlášky
   document.querySelectorAll('input').forEach(clearError);
-
   document.getElementById('principal').focus();
 }
 
 // ── Pomocné funkce pro validaci ──────────────────────
 function showError(input, message) {
   clearError(input);
-  input.style.borderColor = '';
   const wrapper = input.closest('.input-wrapper');
   if (wrapper) {
     wrapper.style.borderColor = '#D32F2F';
@@ -189,11 +292,17 @@ function clearError(input) {
   }
 }
 
-// ── Enter spustí výpočet ─────────────────────────────
+// ── Enter spustí výpočet / přepočet ─────────────────
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('input[type="number"]').forEach(input => {
     input.addEventListener('keydown', e => {
-      if (e.key === 'Enter') calculate();
+      if (e.key === 'Enter') {
+        if (input.closest('#recalcContent')) {
+          applyRecalc();
+        } else {
+          calculate();
+        }
+      }
     });
     input.addEventListener('input', () => clearError(input));
   });
